@@ -3,8 +3,14 @@ import random as rand
 def select_kth1(list, k):
     list = merge_sort(list)   
     return list[k]
-
     
+    
+    
+    
+def select_kth2(list, k):
+    
+
+  
     
     
 def merge_sort(list):
@@ -43,6 +49,31 @@ def merge(left, right):
         result.extend(right[j:])
         
     return result
+    
+def swap(list, pos1, pos2):
+    val = list[pos1]
+    list[pos1] = list[pos2]
+    list[pos2] = val
+    return list
+    
+    
+def partition(list, index):
+    val = list[index]
+    list = swap(list, index, len(list) - 1)
+    
+    stored = 0
+    for i in range(list):
+        if (list[i] < val):
+            list = swap(list, stored, i)
+            stored += 1
+    list = swap(list, len(list) - 1, stored)
+    
+    return 
+    
+    
+    
+    
+
     
     
     
