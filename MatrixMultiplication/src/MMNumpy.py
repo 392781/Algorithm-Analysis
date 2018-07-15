@@ -20,8 +20,8 @@ def classical(m1,m2):
 
     for i in range(n[0]):
         for j in range(n[0]):
-            for new in range(n[0]):
-                result[i][j] += m1[i][new] * m2[new][j]
+            for k in range(n[0]):
+                result[i][j] += m1[i][k] * m2[k][j]
     return result
 
     
