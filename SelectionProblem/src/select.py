@@ -212,15 +212,15 @@ for i in range(1, 100):
         for i in range(0,5):
             avg_k_1[i] += exe_time[i]
             
-        exe_time = run(select_1,n)
+        exe_time = run(select_2,n)
         for i in range(0,5):
             avg_k_2[i] += exe_time[i]
         
-        exe_time = run(select_1,n)
+        exe_time = run(select_3,n)
         for i in range(0,5):
             avg_k_3[i] += exe_time[i]
         
-        exe_time = run(select_1,n)
+        exe_time = run(select_4,n)
         for i in range(0,5):
             avg_k_4[i] += exe_time[i]
     
