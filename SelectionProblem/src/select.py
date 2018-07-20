@@ -142,8 +142,8 @@ def generate(n):
     arr = []
     
     for i in range(n):
-        arr.append(n)
-        n -= 1
+        val = r.randint(0,n*n)
+        arr.append(val)
     
     return arr
     
