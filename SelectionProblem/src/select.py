@@ -1,66 +1,67 @@
+import sys
+import time
 import random as r
 
-def select_1(list, l, r, k):
-    list = merge_sort(list)
-    return list[k]
+def select_1(arr, l, r, k):
+    arr = merge_sort(arr)
+    return arr[k]
      
     
-def select_2(list, l, r, k):   
+def select_2(arr, l, r, k):   
     if (l == r):
-        return list[l]
-    while(len(list)):
+        return arr[l]
+    while(len(arr)):
         pivot = l
-        pivot, list = partition(list, l, r, pivot)
+        pivot, arr = partition(arr, l, r, pivot)
         
         if (k == pivot):
-            return list[k]
+            return arr[k]
         elif (k < pivot):
             r = pivot - 1
         else:
             l = pivot + 1
     
     
-def select_3(list, l, r, k):
+def select_3(arr, l, r, k):
     if (l == r):
-        return list[l]
+        return arr[l]
         
     pivot = l
-    pivot, list = partition(list, l, r, pivot)
+    pivot, arr = partition(arr, l, r, pivot)
     
     if (k == pivot):
-        return list[k]
+        return arr[k]
     elif (k < pivot):
-        return select_3(list, l, pivot - 1, k)
+        return select_3(arr, l, pivot - 1, k)
     else:
-        return select_3(list, pivot + 1, r, k)
+        return select_3(arr, pivot + 1, r, k)
         
     
-def select_4(list, l, r, k):
+def select_4(arr, l, r, k):
     if (l == r):
-        return list[l]
+        return arr[l]
     
-    print(list)
-    val = med_of_meds(list)
-    pivot = list.index(val)
-    list = partition(list, l, r, pivot)
+    val = med_of_meds(arr[l:r])
+    pivot = arr.index(val)
+    pivot, arr = partition(arr, l, r, pivot)
         
     if (k == pivot):
-        return list[k]
+        return arr[k]
     elif (k < pivot):
-        return select_4(list, l, pivot - 1, k)
+        return select_4(arr, l, pivot - 1, k)
     else:
-        return select_4(list, pivot + 1, r, k)
+        return select_4(arr, pivot + 1, r, k)
+    
+  
     
     
+def merge_sort(arr):
+    result = arr[:len(arr)]
     
-    
-def merge_sort(list):
-    result = list[:len(list)]
-    
-    if (len(list) > 1):
-        middle = len(list) // 2
-        left = list[:middle]
-        right = list[middle:]
+    if (len(arr) > 1):
+        middle = len(arr) // 2
+        left = arr[:middle]
+        right = arr[middle:]
         
         left = merge_sort(left)
         right = merge_sort(right)
@@ -94,55 +95,165 @@ def merge(left, right):
     
 
     
-    
-def partition(list, l, r, index):
-    pivotval = list[index]
-    list = swap(list, index, r)
-    store = l
-    
-    for i in range(l, r):
-        if (list[i] < pivotval):
-            swap(list, store, i)
-            store += 1
-            
-    list = swap(list, r, store)
-    return store, list
   
-  
-def med_of_meds(list):
-    print(list)
-    sublists = [list[i : i + 5] for i in range(0, len(list), 5)]
-    print(sublists)
-    medians = [sorted(i)[len(i)//2] for i in sublists]
-    
+def med_of_meds(arr):
+    subarrs = [arr[i : i + 5] for i in range(0, len(arr), 5)]
+    medians = [sorted(i)[len(i)//2] for i in subarrs]
+
     if (len(medians) <= 5):
-        val = sorted(medians)[len(medians)//2]
+        val = sorted(medians)[(len(medians))//2]
         return val
     else:
         return med_of_meds(medians)
-        
-        
-        
-    
-def swap(list, pos1, pos2):
-    val = list[pos1]
-    list[pos1] = list[pos2]
-    list[pos2] = val 
-    return list
+ 
 
+
+ 
+def partition(arr, left, right, index):
+
+
+    pivotval = arr[index]
+    arr = swap(arr, index, right)
+    store = left
+
+    for i in range(left, right):
+        if (arr[i] < pivotval):
+            swap(arr, store, i)
+            store += 1
+        
+    arr = swap(arr, right, store)
+
+    return store, arr        
+ 
+    
+    
+    
+def swap(arr, pos1, pos2):
+    val = arr[pos1]
+    arr[pos1] = arr[pos2]
+    arr[pos2] = val 
+    
+    return arr
+
+    
+    
+    
 def generate(n):
-    list = []
+    arr = []
     
     for i in range(n):
-        list.append(n)
+        arr.append(n)
         n -= 1
     
-    return list
+    return arr
     
     
     
-list = generate(10)
-    #sorted[10,20,30,40,50,60,70,80,90,100]
-          #  0  1  2  3  4  5  6  7  8  9
-for i in range(len(list)):
-    print(select_4(list, 0, len(list) - 1, i))
+    
+def run(method, n):
+    arr = generate(n)
+        
+    start = time.time()
+    method(arr, 0, len(arr) - 1, 0)
+    end = time.time()
+        
+    exe1 = end - start
+    
+    start = time.time()
+    method(arr, 0, n - 1, n//4)
+    end = time.time()
+        
+    exe2 = end - start
+
+    start = time.time()
+    method(arr, 0, n - 1, n//2)
+    end = time.time()
+        
+    exe3 = end - start
+    
+    start = time.time()
+    method(arr, 0, n - 1, (3*n)//4)
+    end = time.time()
+        
+    exe4 = end - start
+    
+    start = time.time()
+    method(arr, 0, n - 1, n - 1)
+    end = time.time()
+        
+    exe5 = end - start
+    
+    return [exe1, exe2, exe3, exe4, exe5]
+    
+    
+    
+''' main '''
+
+n = 10
+
+file1 = open("data-alg-1.txt", "w")
+file2 = open("data-alg-2.txt", "w")
+file3 = open("data-alg-3.txt", "w")
+file4 = open("data-alg-4.txt", "w")
+
+for i in range(1, 100):
+    avg_k_1 = [0]*5
+    avg_k_2 = [0]*5
+    avg_k_3 = [0]*5
+    avg_k_4 = [0]*5
+
+    sys.stdout.write("n = " + str(n) + "\n")
+    sys.stdout.flush()
+    
+    for j in range(1, 4):
+        sys.stdout.write("PASS #%d ALG 1-4: \n" % (j))
+        sys.stdout.flush()
+        exe_time = run(select_1,n)
+        for i in range(0,5):
+            avg_k_1[i] += exe_time[i]
+            
+        exe_time = run(select_1,n)
+        for i in range(0,5):
+            avg_k_2[i] += exe_time[i]
+        
+        exe_time = run(select_1,n)
+        for i in range(0,5):
+            avg_k_3[i] += exe_time[i]
+        
+        exe_time = run(select_1,n)
+        for i in range(0,5):
+            avg_k_4[i] += exe_time[i]
+    
+    avg_k_1 = [x / 5 for x in avg_k_1]
+    avg_k_2 = [x / 5 for x in avg_k_2]
+    avg_k_3 = [x / 5 for x in avg_k_3]
+    avg_k_4 = [x / 5 for x in avg_k_4]
+    
+    for i in range(0,5):
+        file1.write(str(avg_k_1[i]) + "\n")
+        file2.write(str(avg_k_2[i]) + "\n")
+        file3.write(str(avg_k_3[i]) + "\n")
+        file4.write(str(avg_k_4[i]) + "\n")
+
+    file1.write("\n")
+    file2.write("\n")
+    file3.write("\n")
+    file4.write("\n")
+    
+    print("\nTIMES: ")
+    
+    print(avg_k_1)
+    print(avg_k_2)
+    print(avg_k_3)
+    print(avg_k_4)
+
+    print("---------------------------------------\n")
+    
+    
+    n = 0
+    n += 50
+
+file1.close()
+file2.close()
+file3.close()
+file4.close() 
