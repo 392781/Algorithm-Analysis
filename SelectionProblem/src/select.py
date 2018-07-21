@@ -2,60 +2,131 @@ import sys
 import time
 import random as r
 
-def select_1(arr, l, r, k):
+def select_1(arr, left, right, k):
+    """ 
+    Selection algorithm using mergesort O(n log(n)). Sorts the array
+    and returns k-th smallest element.
+        
+    Parameters:
+        arr     (list):         list of integers
+        *left   (int):          left index of list
+        *right  (int):          right index of list
+        k       (int):          k-th smallest element to find
+        
+        *These arguments aren't needed but are used for the run function
+        
+    Returns:
+        arr[k]  (int):          k-th smallest element of list
+    """
+    
     arr = merge_sort(arr)
     return arr[k]
      
     
-def select_2(arr, l, r, k):   
-    if (l == r):
-        return arr[l]
+def select_2(arr, left, right, k):
+    """ 
+    Iterative quickselect algorithm O(n^2).  Uses partition to sort elements
+    around a pivot element and look for k-th smallest element.
+        
+    Parameters:
+        arr     (list):         list of integers
+        left    (int):          left index of list
+        right   (int):          right index of list
+        k       (int):          k-th smallest element to find
+    
+    Returns:
+        arr[k]  (int):          k-th smallest element of list
+    """
+    
+    if (left == right):
+        return arr[left]
     while(len(arr)):
-        pivot = l
-        pivot, arr = partition(arr, l, r, pivot)
+        pivot = left
+        pivot, arr = partition(arr, left, right, pivot)
         
         if (k == pivot):
             return arr[k]
         elif (k < pivot):
-            r = pivot - 1
+            right = pivot - 1
         else:
-            l = pivot + 1
+            left = pivot + 1
     
     
-def select_3(arr, l, r, k):
-    if (l == r):
-        return arr[l]
+def select_3(arr, left, right, k):
+    """ 
+    Recursive quickselect algorithm O(n^2).  Uses partition to sort elements
+    around a pivot element and look for k-th smallest element.
         
-    pivot = l
-    pivot, arr = partition(arr, l, r, pivot)
+    Parameters:
+        arr     (list):         list of integers
+        left    (int):          left index of list
+        right   (int):          right index of list
+        k       (int):          k-th smallest element to find
+    
+    Returns:
+        arr[k]  (int):          k-th smallest element of list
+    """
+    
+    if (left == right):
+        return arr[left]
+        
+    pivot = left
+    pivot, arr = partition(arr, left, right, pivot)
     
     if (k == pivot):
         return arr[k]
     elif (k < pivot):
-        return select_3(arr, l, pivot - 1, k)
+        return select_3(arr, left, pivot - 1, k)
     else:
-        return select_3(arr, pivot + 1, r, k)
+        return select_3(arr, pivot + 1, right, k)
         
     
-def select_4(arr, l, r, k):
-    if (l == r):
-        return arr[l]
+def select_4(arr, left, right, k):
+    """ 
+    Recursive median of medians selection O(n).  Uses the median of medians
+    function to select an optimal pivot to then use the quickselect partition 
+    function to sort elements around it and look for the k-th smallest element.
+        
+    Parameters:
+        arr     (list):         list of integers
+        left    (int):          left index of list
+        right   (int):          right index of list
+        k       (int):          k-th smallest element to find
     
-    val = med_of_meds(arr[l:r])
+    Returns:
+        arr[k]  (int):          k-th smallest element of list
+    """
+    
+    if (left == right):
+        return arr[left]
+    
+    val = med_of_meds(arr[left:right])
     pivot = arr.index(val)
-    pivot, arr = partition(arr, l, r, pivot)
+    pivot, arr = partition(arr, left, right, pivot)
         
     if (k == pivot):
         return arr[k]
     elif (k < pivot):
-        return select_4(arr, l, pivot - 1, k)
+        return select_4(arr, left, pivot - 1, k)
     else:
-        return select_4(arr, pivot + 1, r, k)
+        return select_4(arr, pivot + 1, right, k)
     
-  
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''  
     
     
 def merge_sort(arr):
+    """ 
+    Mergesort algorithm used in select_1.  Recursively splits the list
+    into sublists that are then merged back together and sorted.
+        
+    Parameters:
+        arr     (list):         list of integers
+    
+    Returns:
+        result  (list):         sorted list
+    """
+    
     result = arr[:len(arr)]
     
     if (len(arr) > 1):
@@ -67,12 +138,21 @@ def merge_sort(arr):
         right = merge_sort(right)
         result = merge(left, right)
         
-    return result
-    
-    
+    return result    
     
     
 def merge(left, right):
+    """ 
+    Part of mergesort.  Merges the split lists back together
+        
+    Parameters:
+        left    (list):          left list
+        right   (list):          right list 
+    
+    Returns:
+        result  (list):          merged list
+    """
+    
     result = []
     i = 0
     j = 0
@@ -93,10 +173,18 @@ def merge(left, right):
         
     return result
     
-
-    
   
 def med_of_meds(arr):
+    """ 
+    Part of select_4.  Recursively finds the median of medians of a given list.
+        
+    Parameters:
+        arr     (list):         list of integers
+    
+    Returns:
+        val     (int):          element inside the list to use as a pivot
+    """
+    
     subarrs = [arr[i : i + 5] for i in range(0, len(arr), 5)]
     medians = [sorted(i)[len(i)//2] for i in subarrs]
 
@@ -107,11 +195,21 @@ def med_of_meds(arr):
         return med_of_meds(medians)
  
 
-
- 
 def partition(arr, left, right, index):
-
-
+    """ 
+    Part of select_2, 3, and 4.  Partitions a list based on a given index
+        
+    Parameters:
+        arr     (list):         list of integers
+        left    (int):          left index of the list
+        right   (int):          right index of the list 
+        index   (int):          pivot index
+    
+    Returns:
+        store   (int):          the position of the pivot point
+        arr     (list):         partitioned list
+    """
+    
     pivotval = arr[index]
     arr = swap(arr, index, right)
     store = left
@@ -123,34 +221,71 @@ def partition(arr, left, right, index):
         
     arr = swap(arr, right, store)
 
-    return store, arr        
- 
-    
+    return store, arr          
     
     
 def swap(arr, pos1, pos2):
+    """ 
+    Swaps 2 indices of a list.
+        
+    Parameters:
+        arr     (list):         list of integers
+        pos1    (int):          index to be swapped
+        pos2    (int):          index to be swapped
+    
+    Returns:
+        arr     (list):         list with the elements swapped
+    """
+    
     val = arr[pos1]
     arr[pos1] = arr[pos2]
     arr[pos2] = val 
     
     return arr
-
-    
     
     
 def generate(n):
+    """ 
+    Generates a n-sized list with random, nonrepeating elements
+        
+    Parameters:
+        n       (int):          number of elements to generate
+    
+    Returns:
+        arr     (list):         generated list
+    """
+    
     arr = []
     
     for i in range(n):
-        val = r.randint(0,n*n)
+        included = True
+        
+        while(indcluded):
+            val = r.randint(0, n*n)
+            if (val not in list):
+                included = False
+                
         arr.append(val)
     
     return arr
-    
-    
-    
+        
     
 def run(method, n):
+    """ 
+    Runs and times a specified method on a single generated array
+        
+    Parameters:
+        method  (string):       method to run
+        n       (int):          number of elements to generate
+    
+    Returns:
+        exe1    (int):          Execution time for k-th position 0
+        exe2    (int):          Execution time for k-th position n/4
+        exe3    (int):          Execution time for k-th position n/2
+        exe4    (int):          Execution time for k-th position 3n/4
+        exe5    (int):          Execution time for k-th position n
+    """
+    
     arr = generate(n)
         
     start = time.time()
@@ -187,16 +322,22 @@ def run(method, n):
     
     
     
-''' main '''
+''''''''''''''''''''''''''''''# main #''''''''''''''''''''''''''''''
 
+
+
+# Begins with array size 10
 n = 10
 
+# Generate data files
 file1 = open("data-alg-1.txt", "w")
 file2 = open("data-alg-2.txt", "w")
 file3 = open("data-alg-3.txt", "w")
 file4 = open("data-alg-4.txt", "w")
 
+# Begin test 
 for i in range(1, 100):
+    # Averages for positions 1, n/2, n/4, 3n/4, and n for each algorithm
     avg_k_1 = [0]*5
     avg_k_2 = [0]*5
     avg_k_3 = [0]*5
@@ -205,6 +346,7 @@ for i in range(1, 100):
     sys.stdout.write("n = " + str(n) + "\n")
     sys.stdout.flush()
     
+    # 3 passes for each algorithm
     for j in range(1, 4):
         sys.stdout.write("PASS #%d ALG 1-4: \n" % (j))
         sys.stdout.flush()
@@ -224,11 +366,13 @@ for i in range(1, 100):
         for i in range(0,5):
             avg_k_4[i] += exe_time[i]
     
-    avg_k_1 = [x / 5 for x in avg_k_1]
-    avg_k_2 = [x / 5 for x in avg_k_2]
-    avg_k_3 = [x / 5 for x in avg_k_3]
-    avg_k_4 = [x / 5 for x in avg_k_4]
+    # Calculate the average of the 3 passes
+    avg_k_1 = [x / 3 for x in avg_k_1]
+    avg_k_2 = [x / 3 for x in avg_k_2]
+    avg_k_3 = [x / 3 for x in avg_k_3]
+    avg_k_4 = [x / 3 for x in avg_k_4]
     
+    # Write averages to file
     for i in range(0,5):
         file1.write(str(avg_k_1[i]) + "\n")
         file2.write(str(avg_k_2[i]) + "\n")

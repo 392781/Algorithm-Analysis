@@ -9,11 +9,11 @@ def classical(m1,m2):
     3 loops, n^3 time
         
     Parameters:
-    m1 (ndarray):       2d array size n 
-    m2 (ndarray):       2d array size n
+        m1 (ndarray):       2d array size n 
+        m2 (ndarray):       2d array size n
     
     Returns:
-    result:             2d array containing the solution
+        result:             2d array containing the solution
     """
     n = m1.shape
     result = np.zeros(n, dtype = int)
@@ -33,11 +33,11 @@ def divide(m1,m2):
     Subdivides the arrays into smaller portions and recursively calls the solutions
         
     Parameters:
-    m1 (ndarray):       2d array size n 
-    m2 (ndarray):       2d array size n
+        m1 (ndarray):       2d array size n 
+        m2 (ndarray):       2d array size n
     
     Returns:
-    result:             2d array containing the solution
+        result:             2d array containing the solution
     """
     if ((m1.shape[0] % 2 == 0) or (m1.shape[0] == 1)):
         n = m1.shape[0]
@@ -66,14 +66,15 @@ def divide(m1,m2):
 def strassen(m1, m2):
     """ 
     Strassen method for matrix multiplication
-    Applies the Strassen algorithm which saves 1 multiplication compared to a regular divide and conquer
+    Applies the Strassen algorithm which saves 1 multiplication compared to a regular 
+    divide and conquer
         
     Parameters:
-    m1 (ndarray):       2d array size n 
-    m2 (ndarray):       2d array size n
+        m1 (ndarray):       2d array size n 
+        m2 (ndarray):       2d array size n
     
     Returns:
-    result:             2d array containing the solution
+        result:             2d array containing the solution
     """
     if ((m1.shape[0] % 2 == 0) or (m1.shape[0] == 1)):
         n = m1.shape[0] 
@@ -112,11 +113,11 @@ def generate(n):
     Function to generate two n sized arrays.  One with repeating values from 0 to 31 and the other with repeating values from 0 to 63.
         
     Parameters:
-    n (int):            array size
+        n (int):            array size
     
     Returns:
-    m1 (ndarray):       2d array size n 
-    m2 (ndarray):       2d array size n
+        m1 (ndarray):       2d array size n 
+        m2 (ndarray):       2d array size n
     """
     m1 = np.zeros((n, n), dtype = int)
     m2 = np.zeros((n, n), dtype = int)
@@ -136,11 +137,11 @@ def run(method, n):
     Runner function, takes the method name and desired array size as parameters.  Tt generates 2 n-sized arrays then runs and times the desired method.
         
     Parameters:
-    method (string):    Desired method name to run (classical, divide, strassen)
-    n (int):            array size
+        method (string):    Desired method name to run (classical, divide, strassen)
+        n (int):            array size
     
     Returns:
-    exe (float):        Execution time
+        exe (float):        Execution time
     """
     m1,m2 = generate(n)
         
