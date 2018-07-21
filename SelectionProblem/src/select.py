@@ -260,9 +260,9 @@ def generate(n):
     for i in range(n):
         included = True
         
-        while(indcluded):
+        while(included):
             val = r.randint(0, n*n)
-            if (val not in list):
+            if (val not in arr):
                 included = False
                 
         arr.append(val)
