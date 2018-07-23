@@ -2,6 +2,18 @@ import sys
 import time
 
 def classical(m1,m2):
+    """ 
+    Classical matrix multiplication method.
+    3 loops, n^3 time
+        
+    Parameters:
+        m1 (list):          2d list size n 
+        m2 (list):          2d list size n
+    
+    Returns:
+        result (list):      2d list containing the solution
+    """
+    
     n = len(m1)
     result = [[0] * n for x in range(n)]
     for i in range(n):
@@ -14,6 +26,18 @@ def classical(m1,m2):
     
     
 def divide(m1,m2):
+    """ 
+    Divide and conquer matrix multiplication method
+    Subdivides the arrays into smaller portions and recursively calls the solutions
+        
+    Parameters:
+        m1 (list):          2d list size n 
+        m2 (list):          2d list size n
+    
+    Returns:
+        result (list):      2d list containing the solution
+    """
+    
     if ((len(m1) % 2 == 0) or (len(m1) == 1)):
         n = len(m1)
     else:
@@ -68,6 +92,19 @@ def divide(m1,m2):
 
         
 def strassen(m1, m2):
+    """ 
+    Strassen method for matrix multiplication
+    Applies the Strassen algorithm which saves 1 multiplication compared to a regular 
+    divide and conquer
+        
+    Parameters:
+        m1 (list):          2d list size n 
+        m2 (list):          2d list size n
+    
+    Returns:
+        result (list):      2d array containing the solution
+    """
+    
     if ((len(m1) % 2 == 0) or (len(m1) == 1)):
         n = len(m1)
     else:
@@ -137,6 +174,16 @@ def strassen(m1, m2):
    
    
 def add(m1,m2):
+    """ 
+    Adds two given (n x n)-sized lists together 
+        
+    Parameters:
+        m1 (list):          2d list size n 
+        m2 (list):          2d list size n
+    
+    Returns:
+        result (list):      2d array containing the solution
+    """
     result = [[0] * len(m1[0]) for x in range(len(m1))]
     for i in range(len(m1)):
         for j in range(len(m1[0])):
@@ -148,6 +195,16 @@ def add(m1,m2):
     
     
 def sub(m1,m2):
+    """ 
+    Subtracts two given (n x n)-sized lists together 
+        
+    Parameters:
+        m1 (list):          2d list size n 
+        m2 (list):          2d list size n
+    
+    Returns:
+        result (list):      2d array containing the solution
+    """
     result = [[0] * len(m1[0]) for x in range(len(m1))]
     for i in range(len(m1)):
         for j in range(len(m1[0])):
@@ -159,6 +216,18 @@ def sub(m1,m2):
     
     
 def generate(n):
+    """ 
+    Function to generate two n sized arrays.  One with repeating 
+    values from 0 to 31 and the other with repeating values from 0 to 63.
+        
+    Parameters:
+        n (int):            list size (n x n)
+    
+    Returns:
+        m1 (list):          2d list size n x n 
+        m2 (list):          2d list size n x n
+    """
+    
     m1 = [[0] * n for x in range(n)]
     m2 = [[0] * n for x in range(n)]
     
@@ -173,6 +242,19 @@ def generate(n):
     
     
 def run(method, n):
+    """ 
+    Runner function, takes the method name and desired array 
+    size as parameters.  Tt generates 2 n-sized arrays then runs 
+    and times the desired method.
+        
+    Parameters:
+        method (string):    Desired method name to run (classical, divide, strassen)
+        n (int):            list size
+    
+    Returns:
+        exe (float):        Execution time
+    """
+    
     m1,m2 = generate(n)
         
     start = time.time()
@@ -192,7 +274,10 @@ n = 1
 fileC = open("data-CLASSIC.txt","w")
 fileD = open("data-DIVIDE.txt","w")
 fileS = open("data-STRASSEN.txt","w")
+
+# Initial loop to execute test
 for i in range(1,100):
+    # Averages for classical (C), divide (D), and strassen (S) metthods
     avgC = 0
     avgD = 0
     avgS = 0
@@ -200,7 +285,9 @@ for i in range(1,100):
     sys.stdout.write("n = " + str(n) + "\n")
     sys.stdout.flush()
     
+    # Loop to test each algorithm through 3 passes
     for j in range(1,4):
+        # Classical test, adds to average, prints and writes execution time
         sys.stdout.write("PASS #%d CLASSICAL: " % (j))
         sys.stdout.flush()
         C = run(classical, n)
@@ -209,6 +296,7 @@ for i in range(1,100):
         sys.stdout.write("DONE IN " + str(C) + "s" + " "*20 + "\n")
         sys.stdout.flush()
         
+        # Divide test, adds to average, prints and writes execution time
         sys.stdout.write("        DIVIDE:    ")
         sys.stdout.flush()
         D = run(divide, n)
@@ -217,6 +305,7 @@ for i in range(1,100):
         sys.stdout.write("DONE IN " + str(D) + "s" + " "*20 + "\n")
         sys.stdout.flush()
         
+        # Strassen test, adds to average, prints and writes execution time
         sys.stdout.write("        STRASSEN:  ")
         sys.stdout.flush()
         S = run(strassen, n)
@@ -225,6 +314,7 @@ for i in range(1,100):
         sys.stdout.write("DONE IN " + str(S) + "s" + " "*20 + "\n")
         sys.stdout.flush()
 
+    # Calculates averages of each method and writes to respective file
     avgC = avgC/3
     avgD = avgD/3
     avgS = avgS/3
@@ -232,6 +322,7 @@ for i in range(1,100):
     fileD.write(str(n) + " " + str(avgD) + "\n")
     fileS.write(str(n) + " " + str(avgS) + "\n")
     
+    # Prints to terminal execution time
     print("\n   CLASSICAL Average = %f" % (avgC))
     print("\n      DIVIDE Average = %f" % (avgD))
     print("\n    STRASSEN Average = %f" % (avgS))

@@ -13,8 +13,9 @@ def classical(m1,m2):
         m2 (ndarray):       2d array size n
     
     Returns:
-        result:             2d array containing the solution
+        result (ndarray):   2d array containing the solution
     """
+    
     n = m1.shape
     result = np.zeros(n, dtype = int)
 
@@ -37,8 +38,9 @@ def divide(m1,m2):
         m2 (ndarray):       2d array size n
     
     Returns:
-        result:             2d array containing the solution
+        result (ndarray):   2d array containing the solution
     """
+    
     if ((m1.shape[0] % 2 == 0) or (m1.shape[0] == 1)):
         n = m1.shape[0]
     else:
@@ -74,8 +76,9 @@ def strassen(m1, m2):
         m2 (ndarray):       2d array size n
     
     Returns:
-        result:             2d array containing the solution
+        result (ndarray):   2d array containing the solution
     """
+    
     if ((m1.shape[0] % 2 == 0) or (m1.shape[0] == 1)):
         n = m1.shape[0] 
     else:
@@ -110,7 +113,8 @@ def strassen(m1, m2):
     
 def generate(n):
     """ 
-    Function to generate two n sized arrays.  One with repeating values from 0 to 31 and the other with repeating values from 0 to 63.
+    Function to generate two n sized arrays.  One with repeating 
+    values from 0 to 31 and the other with repeating values from 0 to 63.
         
     Parameters:
         n (int):            array size
@@ -119,6 +123,7 @@ def generate(n):
         m1 (ndarray):       2d array size n 
         m2 (ndarray):       2d array size n
     """
+    
     m1 = np.zeros((n, n), dtype = int)
     m2 = np.zeros((n, n), dtype = int)
     
@@ -134,7 +139,9 @@ def generate(n):
     
 def run(method, n):
     """ 
-    Runner function, takes the method name and desired array size as parameters.  Tt generates 2 n-sized arrays then runs and times the desired method.
+    Runner function, takes the method name and desired array 
+    size as parameters.  Tt generates 2 n-sized arrays then runs 
+    and times the desired method.
         
     Parameters:
         method (string):    Desired method name to run (classical, divide, strassen)
@@ -143,6 +150,7 @@ def run(method, n):
     Returns:
         exe (float):        Execution time
     """
+    
     m1,m2 = generate(n)
         
     start = time.time()
@@ -201,7 +209,6 @@ for i in range(1,100):
         fileS.write(str(n) + " " + str(S) + "\n")
         sys.stdout.write("DONE IN " + str(S) + "s" + " "*20 + "\n")
         sys.stdout.flush()
-        # End for loop
         
     # Calculates averages of each method and writes to respective file
     avgC = avgC/3
